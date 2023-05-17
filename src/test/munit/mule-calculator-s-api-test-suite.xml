@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="mule-calculator-s-api-test-suite.xml" />
+	<munit:test name="mule-calculator-s-api-test-suite-mule-calculator-s-api-mainTest" doc:id="9ed7ad9e-ead3-4ff7-ba91-b01e21c26f04" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="51dc107a-b053-4434-a6e1-4fba11592dc1" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="mule-calculator-s-api-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mule-calculator-s-api-main" doc:id="02879ebf-4c4f-457e-b8f9-64cf066a0240" name="mule-calculator-s-api-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="1471ac8d-0632-4d5f-94ba-c89c27d35478" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="mule-calculator-s-api-test-suite-post:\mathCalculator:application\xml:mule-calculator-s-api-configTest" doc:id="0d1df36f-2c40-4be5-aeb7-537e9aad1c60" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="bdd5dfed-522c-4655-b21f-1626b06753d3" processor="wsc:consume">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="2f17ba10-da0d-4fd8-bb37-8c11e03a3b06" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="0653fdd5-fc4c-4ebc-af23-6fa2bd6a7711">
+				<munit:payload value="#[output application/json&#10;---&#10;readUrl('classpath://inputdata.xml','application/xml')]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\mathCalculator:application\xml:mule-calculator-s-api-config" doc:id="51fdeaf4-cd50-41a3-bf0d-8af761ba11d6" name="post:\mathCalculator:application\xml:mule-calculator-s-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="78e4569c-b440-4f2b-a708-dd3a22a969c3" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="mule-calculator-s-api-test-suite-mule-calculator-s-api-consoleTest" doc:id="15d44d4c-3c18-43d1-8637-37c92229f128" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="5a9ec04d-4755-4f32-ab93-fd49e09dcffc" processor="apikit:console">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="mule-calculator-s-api-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mule-calculator-s-api-console" doc:id="5ea0a72e-c40c-418e-ba6e-8d499b45902b" name="mule-calculator-s-api-console"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="9e2a1031-0e98-4413-9f6c-f00eb6a3965d" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

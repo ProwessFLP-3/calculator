@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ns0:Add xmlns:ns0="http://tempuri.org/">
+  <ns0:intA>5</ns0:intA>
+  <ns0:intB>3</ns0:intB>
+</ns0:Add>

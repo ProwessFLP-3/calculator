@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="5bbe1dc0-e8a2-4821-88a5-fadee91f7c99" >
+		<wsc:connection wsdlLocation="${consume.location}" service="${consume.service}" port="${consume.port}" address="${consume.address}" />
+	</wsc:config>
+	<flow name="mule-calculator-s-api-impFlow" doc:id="ea080237-5cb1-4a41-8d2e-f9cf078ea278" >
+		<ee:transform doc:name="intializing the variable to log" doc:id="03fd0b59-d48d-4626-afc3-1ffff4bfcd97" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="inputPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "businessProcessName": app.name,
+    "flowName": flow.name,
+    "source": "",
+    "target": "calculator soap api",
+    "message": "Received data from sapi main flow",
+    "businessObject": payload
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="success-response-received" doc:id="3492639d-278c-4ebe-8e06-68a3e860296a" name="mile-log:success-response-received" />
+		<wsc:consume doc:id="2f17ba10-da0d-4fd8-bb37-8c11e03a3b06" config-ref="Web_Service_Consumer_Config" operation="#[attributes.queryParams.operation]" />
+		<ee:transform doc:name="success response" doc:id="2beb80a4-4792-41de-b947-0439cfab34f3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="intializing the variable to log1" doc:id="409add40-32c1-4789-a825-bb77fd0e23a5" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="inputPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "businessProcessName": app.name,
+    "flowName": flow.name,
+    "source": "",
+    "target": "calculator soap api",
+    "message": "success response from calcu;lator",
+    "businessObject": payload
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="success-response-sent" doc:id="67a19c60-3cab-4b75-b9a1-fa83d4330f3e" name="mile-log:success-response-sent" />
+	</flow>
+</mule>

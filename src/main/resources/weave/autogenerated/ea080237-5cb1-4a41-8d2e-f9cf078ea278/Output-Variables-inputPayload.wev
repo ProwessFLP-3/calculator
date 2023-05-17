@@ -1,0 +1,11 @@
+%dw 2.0
+
+type auto_ea080237_5cb1_4a41_8d2e_f9cf078ea278_Output_Variables_inputPayload = {|
+  businessProcessName: String | Null, 
+  flowName: String | Null, 
+  source: String, 
+  target: String, 
+  message: String, 
+  businessObject: Any
+|}
+

@@ -1,0 +1,24 @@
+#%RAML 1.0
+title: mule-calculator-s-api
+version: v1
+protocols: [HTTP,HTTPS]
+securitySchemes:
+  security: !include Traits/securityScheme.raml
+traits:
+  response: !include Traits/errorresponse.raml
+/mathCalculator:
+  post:
+    body:
+      application/xml:
+        example: !include Examples/xml-example.xml
+    responses:
+      201:
+        body:
+          application/json:
+            example: !include Examples/successresponse-calculator.json
+      404:
+        body:
+          application/json:
+            example: !include Examples/failure-response.json
+
+    
